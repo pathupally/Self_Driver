@@ -1,0 +1,108 @@
+; Godot 4 scene – Track (oval racetrack)
+; Outer wall: large 1200×670 rounded rect  (group "wall")
+; Inner wall: small 900×440 rounded rect   (group "wall")
+; 8 checkpoint Area2D nodes around the oval
+; TrackManager node coordinates them all
+[gd_scene load_steps=8 format=3 uid="uid://track_scene"]
+
+[ext_resource type="Script" path="res://scripts/TrackManager.gd" id="1"]
+
+; ── Collision shapes ───────────────────────────────────────────────────────
+
+[sub_resource type="RectangleShape2D" id="outer_shape"]
+size = Vector2(1200, 670)
+
+[sub_resource type="RectangleShape2D" id="inner_shape"]
+size = Vector2(900, 440)
+
+; checkpoint shapes (thin horizontal/vertical bars)
+[sub_resource type="RectangleShape2D" id="cp_h"]
+size = Vector2(130, 20)
+
+[sub_resource type="RectangleShape2D" id="cp_v"]
+size = Vector2(20, 130)
+
+; ── Root node ─────────────────────────────────────────────────────────────
+
+[node name="Track" type="Node2D"]
+
+; ── Outer ring (static wall) ──────────────────────────────────────────────
+
+[node name="OuterWall" type="StaticBody2D" parent="." groups=["wall"]]
+
+[node name="OuterCollision" type="CollisionShape2D" parent="OuterWall"]
+shape = SubResource("outer_shape")
+
+; ── Inner island (static wall) ─────────────────────────────────────────────
+
+[node name="InnerWall" type="StaticBody2D" parent="." groups=["wall"]]
+
+[node name="InnerCollision" type="CollisionShape2D" parent="InnerWall"]
+shape = SubResource("inner_shape")
+
+; ── TrackManager ───────────────────────────────────────────────────────────
+
+[node name="TrackManager" type="Node2D" parent="."]
+script = ExtResource("1")
+
+; ── 8 Checkpoints placed clockwise around the oval ────────────────────────
+; CP0 – top straight (spawn finish line)
+[node name="CP0" type="Area2D" parent="TrackManager"]
+position = Vector2(0, -330)
+
+[node name="CPShape0" type="CollisionShape2D" parent="TrackManager/CP0"]
+shape = SubResource("cp_h")
+
+; CP1 – top-right
+[node name="CP1" type="Area2D" parent="TrackManager"]
+position = Vector2(350, -220)
+
+[node name="CPShape1" type="CollisionShape2D" parent="TrackManager/CP1"]
+shape = SubResource("cp_v")
+
+; CP2 – right straight
+[node name="CP2" type="Area2D" parent="TrackManager"]
+position = Vector2(550, 0)
+
+[node name="CPShape2" type="CollisionShape2D" parent="TrackManager/CP2"]
+shape = SubResource("cp_v")
+
+; CP3 – bottom-right
+[node name="CP3" type="Area2D" parent="TrackManager"]
+position = Vector2(350, 220)
+
+[node name="CPShape3" type="CollisionShape2D" parent="TrackManager/CP3"]
+shape = SubResource("cp_v")
+
+; CP4 – bottom straight
+[node name="CP4" type="Area2D" parent="TrackManager"]
+position = Vector2(0, 330)
+
+[node name="CPShape4" type="CollisionShape2D" parent="TrackManager/CP4"]
+shape = SubResource("cp_h")
+
+; CP5 – bottom-left
+[node name="CP5" type="Area2D" parent="TrackManager"]
+position = Vector2(-350, 220)
+
+[node name="CPShape5" type="CollisionShape2D" parent="TrackManager/CP5"]
+shape = SubResource("cp_v")
+
+; CP6 – left straight
+[node name="CP6" type="Area2D" parent="TrackManager"]
+position = Vector2(-550, 0)
+
+[node name="CPShape6" type="CollisionShape2D" parent="TrackManager/CP6"]
+shape = SubResource("cp_v")
+
+; CP7 – top-left
+[node name="CP7" type="Area2D" parent="TrackManager"]
+position = Vector2(-350, -220)
+
+[node name="CPShape7" type="CollisionShape2D" parent="TrackManager/CP7"]
+shape = SubResource("cp_v")
+
+; ── Spawn marker ───────────────────────────────────────────────────────────
+
+[node name="SpawnPoint" type="Marker2D" parent="."]
+position = Vector2(0, -280)

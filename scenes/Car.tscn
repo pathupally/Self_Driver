@@ -1,0 +1,61 @@
+; Godot 4 scene – Car
+; Contains: RigidBody2D + Sprite + Collision + 8 RayCasts + AIController2D
+[gd_scene load_steps=5 format=3 uid="uid://car_scene"]
+
+[ext_resource type="Script" path="res://scripts/Car.gd" id="1"]
+[ext_resource type="Script" path="res://scripts/CarAIController.gd" id="2"]
+[ext_resource type="Texture2D" path="res://assets/car.png" id="3"]
+
+[sub_resource type="RectangleShape2D" id="4"]
+size = Vector2(28, 48)
+
+[node name="Car" type="RigidBody2D" groups=["car"]]
+script = ExtResource("1")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("3")
+scale = Vector2(0.5, 0.5)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("4")
+
+; ── 8 Raycasts arranged in a fan ──────────────────────────────────────────
+
+[node name="RayCast_FL135" type="RayCast2D" parent="."]
+target_position = Vector2(-141.4, -141.4)
+enabled = true
+
+[node name="RayCast_FL90" type="RayCast2D" parent="."]
+target_position = Vector2(-200, 0)
+enabled = true
+
+[node name="RayCast_FL45" type="RayCast2D" parent="."]
+target_position = Vector2(-141.4, 141.4)
+enabled = true
+
+[node name="RayCast_FL22" type="RayCast2D" parent="."]
+target_position = Vector2(-76.5, 184.8)
+enabled = true
+
+[node name="RayCast_FR22" type="RayCast2D" parent="."]
+target_position = Vector2(76.5, 184.8)
+enabled = true
+
+[node name="RayCast_FR45" type="RayCast2D" parent="."]
+target_position = Vector2(141.4, 141.4)
+enabled = true
+
+[node name="RayCast_FR90" type="RayCast2D" parent="."]
+target_position = Vector2(200, 0)
+enabled = true
+
+[node name="RayCast_FR135" type="RayCast2D" parent="."]
+target_position = Vector2(141.4, -141.4)
+enabled = true
+
+; ── AI Controller ──────────────────────────────────────────────────────────
+
+[node name="CarAIController" type="Node2D" parent="."]
+script = ExtResource("2")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

@@ -1,0 +1,17 @@
+# Godot 4
+*.uid
+.godot/
+*.import
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+training/venv/
+training/.venv/
+training/tb_logs/
+training/checkpoints/
+training/models/
+
+# macOS
+.DS_Store

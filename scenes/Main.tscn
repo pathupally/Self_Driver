@@ -1,0 +1,68 @@
+; Godot 4 scene – Main (root scene)
+; Instances the Track + Car, wires up the Sync node (Godot RL Agents),
+; and provides an in-game HUD for speed / reward / lap count.
+[gd_scene load_steps=4 format=3 uid="uid://main_scene"]
+
+[ext_resource type="PackedScene" path="res://scenes/Track.tscn" id="1"]
+[ext_resource type="PackedScene" path="res://scenes/Car.tscn" id="2"]
+[ext_resource type="Script" path="res://scripts/Main.gd" id="3"]
+
+[node name="Main" type="Node2D"]
+script = ExtResource("3")
+
+; ── Camera centred on the track ──────────────────────────────────────────
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(640, 360)
+zoom = Vector2(0.85, 0.85)
+
+; ── Track (background + walls + checkpoints) ─────────────────────────────
+
+[node name="Track" type="Node2D" parent="."]
+position = Vector2(640, 360)
+
+[node name="TrackInstance" parent="Track" instance=ExtResource("1")]
+
+; ── Car ──────────────────────────────────────────────────────────────────
+
+[node name="Car" parent="." instance=ExtResource("2")]
+position = Vector2(640, 85)   ; spawn at top straight
+
+; ── Godot RL Agents – Sync node (handles TCP ↔ Python loop) ─────────────
+; This node is provided by the godot_rl_agents plugin.
+; If you don't see it, enable the plugin under Project → Plugins first.
+
+[node name="Sync" type="Node" parent="."]
+script = "res://addons/godot_rl_agents/sync.gd"
+control_mode = 0              ; 0 = Training (waits for Python), 1 = Inference
+action_repeat = 8             ; physics frames per RL step
+speed_up = 1
+
+; ── HUD (always-on UI overlay) ───────────────────────────────────────────
+
+[node name="HUD" type="CanvasLayer" parent="."]
+
+[node name="Panel" type="PanelContainer" parent="HUD"]
+anchors_preset = 0
+offset_right = 220
+offset_bottom = 130
+theme_override_styles/panel = null
+
+[node name="VBox" type="VBoxContainer" parent="HUD/Panel"]
+layout_mode = 2
+
+[node name="SpeedLabel" type="Label" parent="HUD/Panel/VBox"]
+text = "Speed: 0 px/s"
+theme_override_colors/font_color = Color(0.2, 1, 0.4)
+
+[node name="RewardLabel" type="Label" parent="HUD/Panel/VBox"]
+text = "Ep Reward: 0.0"
+theme_override_colors/font_color = Color(1, 0.85, 0.2)
+
+[node name="LapsLabel" type="Label" parent="HUD/Panel/VBox"]
+text = "Laps: 0"
+theme_override_colors/font_color = Color(0.4, 0.8, 1)
+
+[node name="EpisodeLabel" type="Label" parent="HUD/Panel/VBox"]
+text = "Episode: 0"
+theme_override_colors/font_color = Color(1, 1, 1)
