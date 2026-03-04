@@ -13,41 +13,11 @@ Player ──── (manual play)
 
 ---
 
-## Project Structure
-
-```
-Self_Driver/
-├── project.godot          # Godot 4 project config
-├── scenes/
-│   ├── Main.tscn          # Root scene (Track + Car + Sync + HUD)
-│   ├── Car.tscn           # Car body + 8 raycasts + AIController
-│   └── Track.tscn         # Oval racetrack + 8 checkpoints
-├── scripts/
-│   ├── Car.gd             # Physics, raycast sensing, crash detection
-│   ├── CarAIController.gd # RL bridge: observations, actions, rewards
-│   ├── TrackManager.gd    # Checkpoint sequencing, lap counting
-│   └── Main.gd            # HUD updates, episode tracking
-├── training/
-│   ├── train.py           # PPO training + inference runner
-│   ├── requirements.txt
-│   └── README.md
-├── addons/
-│   └── godot_rl_agents/   # Plugin (install via Godot editor)
-└── assets/
-    └── car.png
-```
-
----
-
-## Quick Start
+##  Start
 
 ### 1. Install the Godot RL Agents Plugin
 
 ```bash
-# Option A – via AssetLib inside Godot editor
-# Search "Godot RL Agents" → Install → Enable in Project Settings → Plugins
-
-# Option B – manual
 cd Self_Driver
 git submodule add https://github.com/edbeeching/godot_rl_agents.git addons/godot_rl_agents
 ```
@@ -57,7 +27,7 @@ git submodule add https://github.com/edbeeching/godot_rl_agents.git addons/godot
 ```bash
 cd training
 python -m venv venv
-source venv/bin/activate    # Windows: venv\Scripts\activate
+source venv/bin/activate    
 pip install -r requirements.txt
 ```
 
