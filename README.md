@@ -1,3 +1,5 @@
+### WORK IN PROGRESS ###
+
 # Self-Driving Car RL Mini Game (Godot 4 + PPO)
 
 A 2D top-down racing game where a car learns to drive around an oval track using **Reinforcement Learning** (PPO via StableBaselines3). The Godot engine simulates physics; Python handles training via TCP using the [Godot RL Agents](https://github.com/edbeeching/godot_rl_agents) bridge.
